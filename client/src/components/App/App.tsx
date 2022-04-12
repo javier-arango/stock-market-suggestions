@@ -3,7 +3,7 @@ import logo from './../../assets/logo.svg';
 import './App.css';
 
 function App() {
-  const radio: string = "hello";
+  const radio: string = "hello world!";
   console.log(radio)
   return (
     <div className="App">
