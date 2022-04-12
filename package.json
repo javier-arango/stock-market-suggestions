@@ -9,7 +9,8 @@
     "client:build": "cd client && npm run build && cd ..",
     "start": "node server/index.ts",
     "dev:server": "nodemon --watch './**/*.ts' --exec \"node --experimental-specifier-resolution=node --loader ts-node/esm\" src/index.ts",
-    "dev:deploy": "npm run client:build && npm run dev:server"
+    "dev:deploy": "npm run client:build && npm run dev:server",
+    "dev:install": "npm i && cd client && npm i && cd .."
   },
   "keywords": [],
   "author": "",
