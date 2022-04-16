@@ -1,17 +1,17 @@
 /** Datum object from "API" */
 export type Datum = {
-    date: Date;
-    price: number;
-    dcf: number;
+  date: Date;
+  price: number;
+  dcf: number;
 };
 
-/** Extracted stock information from Data */
+// /** Extracted stock information from Data */
 export type Stock = {
-    investmentRating: number;
-    ticker: string;
-    name: string;
-    data: Array<Datum>; // sorted by date
-}
+  investmentRating: number;
+  ticker: string;
+  name: string;
+  data: Array<Datum>; // sorted by date
+};
 
-/** Processed data to be delivered to Frontend */
+// /** Processed data to be delivered to Frontend */
 export type Stocks = Array<Stock>;
