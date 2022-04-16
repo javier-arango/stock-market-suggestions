@@ -1,0 +1,29 @@
+#sidebar {
+    background-color: white;
+  }
+  
+  .list-group .list-group-item {
+    cursor: pointer;
+  }
+  
+  .list-group .stikcer {
+    color: red;
+  }
+  
+  .list-group .name {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .list-group .active {
+    background-color: #1c2731 !important;
+    border: none !important;
+    border-radius: 0px !important;
+  }
+  
+  .list-group .active .sticker {
+    color: white;
+  }
+  
+  .list-group .active .name {
+    color: #44ffd2;
+  }

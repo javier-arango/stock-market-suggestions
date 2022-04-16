@@ -1,0 +1,40 @@
+#stock-view {
+    background-color: #1c2731;
+  }
+  
+  .market-info {
+    /*   border-radius: 20px; */
+    background-color: rgba(68, 255, 210, 0.15);
+  }
+  
+  .market-info h6 {
+    color: #44ffd2;
+  }
+  
+  .market-info .num {
+    color: white;
+  }
+  
+  .chart-info {
+    background-color: rgba(68, 255, 210, 0.15);
+    /*   border-radius: 20px; */
+  }
+  
+  .chart-info .sticker {
+    color: white;
+  }
+  
+  .chart-info .name {
+    color: #44ffd2;
+  }
+  
+  .chart-info .t-frame {
+    color: white;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .chart-info .t-active {
+    color: #44ffd2;
+  }
+  
