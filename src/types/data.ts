@@ -1,3 +1,5 @@
+import { type } from "os";
+
 /** Datum object from "API" */
 export type Datum = {
   date: Date;

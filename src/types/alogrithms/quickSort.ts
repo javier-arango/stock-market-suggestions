@@ -26,15 +26,81 @@ function partition(arr: Stocks, low: number, high: number): number {
 }
 
 /** Quick Sort */
-function quickSort(arr: Stocks, low: number, high: number): void {
-  if (low < high) {
-    // Partition index
-    let pi = partition(arr, low, high);
+function quickSort(
+  arr: Stocks,
+  low: number,
+  high: number,
+  type: "ascending" | "descending"
+): void {
+  /** Ascending sort */
+  if (type === "ascending") {
+    if (low < high) {
+      // Partition index
+      let pi = partition(arr, low, high);
 
-    // Recursively partition of the array
-    quickSort(arr, low, pi - 1);
-    quickSort(arr, pi + 1, high);
+      // Recursively partition of the array
+      quickSort(arr, low, pi - 1, "ascending");
+      quickSort(arr, pi + 1, high, "ascending");
+    }
+  } else {
+    /** Descending sort */
+    if (high < low) {
+      // Partition index
+      let pi = partition(arr, high, low);
+
+      // Recursively partition of the array
+      quickSort(arr, high, pi - 1, "descending");
+      quickSort(arr, pi + 1, low, "descending");
+    }
   }
 }
+
+/** Run example */
+const arr: Stocks = [
+  {
+    investmentRating: 89,
+    ticker: "APPL",
+    name: "Apple",
+    data: [{ date: new Date(), price: 2, dcf: 2 }],
+  },
+  {
+    investmentRating: 856,
+    ticker: "CHI",
+    name: "China",
+    data: [{ date: new Date(), price: 2, dcf: 2 }],
+  },
+  {
+    investmentRating: 45,
+    ticker: "TWI",
+    name: "Twitter",
+    data: [{ date: new Date(), price: 2, dcf: 2 }],
+  },
+  {
+    investmentRating: 1,
+    ticker: "MCS",
+    name: "Micrsoft",
+    data: [{ date: new Date(), price: 2, dcf: 2 }],
+  },
+  {
+    investmentRating: 3,
+    ticker: "FBC",
+    name: "Facebook",
+    data: [{ date: new Date(), price: 2, dcf: 2 }],
+  },
+  {
+    investmentRating: 5,
+    ticker: "ABC",
+    name: "Google",
+    data: [{ date: new Date(), price: 2, dcf: 2 }],
+  },
+];
+
+// Print unsorted array
+for (let i = 0; i < arr.length; i++) console.log(arr[i]);
+
+quickSort(arr, 0, arr.length - 1, "ascending");
+
+// Print sorted array
+for (let i = 0; i < arr.length; i++) console.log(arr[i]);
 
 module.exports = quickSort;
