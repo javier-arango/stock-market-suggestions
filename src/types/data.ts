@@ -1,4 +1,4 @@
-import { type } from "os";
+import { getData } from "./file-handling/readFile";
 
 /** Datum object from "API" */
 export type Datum = {
@@ -14,6 +14,9 @@ export type Stock = {
   name: string;
   data: Array<Datum>; // sorted by date
 };
+
+const filePath = "../data/stock_data.json";
+getData(filePath);
 
 // /** Processed data to be delivered to Frontend */
 export type Stocks = Array<Stock>;
