@@ -27,3 +27,7 @@
   .list-group .active .name {
     color: #44ffd2;
   }
+
+  .spinner-border{
+    border-color: #44ffd2 #44ffd2 #44ffd2 #ffffff;
+  }
