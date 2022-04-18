@@ -1,52 +1,56 @@
-import React from 'react';
-import logo from './../../assets/logo.svg';
-import './sidebar.css';
+import React from "react";
+import StocksList from "../StocksList/StocksList";
+import logo from "./../../assets/logo.svg";
+import "./sidebar.css";
 
-function SideBar() {
-
+function SideBar(props: any) {
   return (
     <div id="sidebar" className="col-4 h-100 p-0">
-        <div className="w-100 my-2 d-flex justify-content-center">
-            <img src={logo}  width="150" alt="logo" />
-        </div>
-        <div className="form-floating m-3">
-        <input type="text" className="form-control" placeholder="Apple"/>
+      <div className="w-100 my-2 d-flex justify-content-center">
+        <img src={logo} width="150" alt="logo" />
+      </div>
+      <div className="form-floating m-3">
+        <input type="text" className="form-control" placeholder="Apple" />
         <label htmlFor="floatingInput">Search for a stock</label>
-        </div>
+      </div>
 
-        <div className="w-100 h-20 d-flex ms-3 my-5">
+      <div className="w-100 h-20 d-flex ms-3 my-5">
         <p className="d-flex align-items-center">Sort Algorithm:</p>
-        <input type="radio" className="btn-check" name="options-outlined" id="merge-sort" autoComplete="off" checked />
-        <label className="btn btn-outline-secondary ms-3" htmlFor="merge-sort">Merge Sort</label>
+        <input
+          type="radio"
+          className="btn-check"
+          name="options-outlined"
+          id="merge-sort"
+          autoComplete="off"
+          checked
+        />
+        <label className="btn btn-outline-secondary ms-3" htmlFor="merge-sort">
+          Merge Sort
+        </label>
 
-        <input type="radio" className="btn-check" name="options-outlined" id="quick-sort" autoComplete="off" />
-        <label className="btn btn-outline-secondary ms-3" htmlFor="quick-sort">Quick Sort</label>
+        <input
+          type="radio"
+          className="btn-check"
+          name="options-outlined"
+          id="quick-sort"
+          autoComplete="off"
+        />
+        <label className="btn btn-outline-secondary ms-3" htmlFor="quick-sort">
+          Quick Sort
+        </label>
+      </div>
+      {props.stocks.length == 0 ? (
+        <div className="w-100 h-50 d-flex justify-content-center align-items-center">
+          <div className="spinner-border" role="status">
+            <span className="sr-only"></span>
+          </div>
         </div>
-
-        <ul className="list-group">
-            <li className="list-group-item active p-2">
-            <div className="row">
-                <div className="col-8">
-                <h5 className="sticker">AAPL</h5>
-                <small className="name">Apple</small>
-                </div>
-                <div className="col-4 d-flex justify-content-center align-items-center">
-                <h5 className="p-green">$240.00</h5>
-                </div>
-            </div>
-            </li>
-            <li className="list-group-item p-2">
-            <div className="row">
-                <div className="col-8">
-                <h5 className="sticker">AAPL</h5>
-                <small className="name">Apple</small>
-                </div>
-                <div className="col-4 d-flex justify-content-center align-items-center">
-                <h5 className="p-red">$240.00</h5>
-                </div>
-            </div>
-            </li>
-        </ul>
+      ) : (
+        <StocksList
+          stocks={props.stocks}
+          listClickHandler={props.listClickHandler}
+        />
+      )}
     </div>
   );
 }
