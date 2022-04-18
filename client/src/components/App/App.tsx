@@ -77,6 +77,10 @@ function App() {
     setSortAlgorithm(() => algo);
   };
 
+  const searchStock = (searchValue: string) => {
+    
+  };
+
   return (
     <div id="container" className="container-fluid vh-100">
       <div className="row vh-100">
