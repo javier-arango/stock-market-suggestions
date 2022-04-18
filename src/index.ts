@@ -1,47 +1,112 @@
 import express, { Request, Response } from "express";
-import getProcessedData from "./types/readFile";
+import { Datum, Stock } from "./types/data";
+import data from './data/stock_data.json';
+import { readFile } from "fs/promises";
 import { fileURLToPath } from "url";
+import quickSort from "./types/alogrithms/quickSort";
 import path from "path";
 
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 8000;
+const port = 5000;
 
-// // Have Node serve the files for our built React app
-app.use(express.static("public"));
-app.use(express.static(path.resolve(__dirname, "../client/build")));
+/** Read JSON file */
+const readJSON = async () => {
+  // Get data from JSON file
+  const buffer = await readFile("../data/stock_data.json", {
+    encoding: "utf-8",
+  });
+  
 
-// app.get("/api", (req: Request, res: Response) => {
-//   res.send("Hello World!");
-// });
-
-// app.get("*", (req: Request, res: Response) => {
-//   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-// });
-
-// app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-// Home route
-app.get("/", (req, res) => {
-  res.send("<h1>Hello from your Express.js server!!</h1>");
-});
-
-const getData = async (res_: any) => {
-  const data = await getProcessedData();
-
-  res_.send(data);
+  // Retrun unprocessed data
+  return JSON.parse(buffer);
 };
 
-// console.log(getData());
+/** Find the investment ating  */
+const findInvestmentRating = (datum: Datum[]) => {
+  // Stock rating
+  let rating: number = 0;
+  let dayCount: number = 0;
 
-// Stocks route | GET requests is used for retrieving resources from a server
-app.get("/stocks", (req, res) => {
-  getData(res);
+  // Find stock rating
+  datum.forEach((data: Datum) => {
+    let dayGap: number = data.dcf - data.price;
+    rating += dayGap;
+    dayCount++;
+  });
+
+  return rating / dayCount;
+};
+
+/** Process the data from json file */
+const getProcessedData = () => {
+  // Unprocessed data
+  const obj: Array<Datum> = data as Array<Datum>;
+
+  // Varibales
+  const dataMap = new Map(); // Map - (key: ticker, value: index)
+  const stocks: Array<Stock> = []; // Store processed data
+
+  // Add the stock data
+  let index: number = 0; // Array index
+  obj.forEach((datum: any) => {
+    if (!dataMap.has(datum.ticker)) {
+      // Add value if the key is not in the map
+      dataMap.set(datum.ticker, index);
+
+      // Add values to the stock obj
+      stocks.push({
+        investmentRating: index,
+        ticker: datum.ticker!,
+        name: datum.name!,
+        data: [],
+      });
+
+      index++;
+    }
+
+    // Add values to the datum obj
+    stocks[dataMap.get(datum.ticker)].data.push({
+      name: datum.name,
+      ticker: datum.ticker,
+      date: datum.date,
+      price: datum.price,
+      dcf: datum.dcf,
+    });
+  });
+
+  // Calculate the investing rating
+  dataMap.forEach((data: any) => {
+    stocks[data].investmentRating = findInvestmentRating(stocks[data].data);
+  });
+
+  // Return processed data
+  return stocks;
+};
+
+let stocks: Array<Stock> = getProcessedData();
+
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, "../client/build")));
+
+app.get("/api", (req: Request, res: Response) => {
+  res.send("Hello World!");
 });
 
-// Where the server is listening for new requests
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+app.get("/api/data", (req: Request, res: Response) => {
+  res.send(stocks);
 });
+
+app.get("/api/data/quicksort", (req: Request, res: Response) => {
+  // Sort the data
+  quickSort(stocks)
+  res.send(stocks);
+});
+
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+});
+
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
