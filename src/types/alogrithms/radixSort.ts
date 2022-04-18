@@ -50,4 +50,55 @@ function radixsort(arr: Stocks, n: number): void {
   for (let exp = 1; Math.floor(m / exp) > 0; exp *= 10) countSort(arr, n, exp);
 }
 
-module.exports = radixsort;
+// /** Run example */
+// const arr: Stocks = [
+//   {
+//     investmentRating: 89,
+//     ticker: "APPL",
+//     name: "Apple",
+//     data: [{ date: new Date(), price: 51, dcf: 78 }],
+//   },
+//   {
+//     investmentRating: 856,
+//     ticker: "CHI",
+//     name: "China",
+//     data: [{ date: new Date(), price: 51, dcf: 78 }],
+//   },
+//   {
+//     investmentRating: 45,
+//     ticker: "TWI",
+//     name: "Twitter",
+//     data: [{ date: new Date(), price: 51, dcf: 78 }],
+//   },
+//   {
+//     investmentRating: 89,
+//     ticker: "MCS",
+//     name: "Micrsoft",
+//     data: [{ date: new Date(), price: 51, dcf: 78 }],
+//   },
+//   {
+//     investmentRating: 3,
+//     ticker: "FBC",
+//     name: "Facebook",
+//     data: [{ date: new Date(), price: 51, dcf: 78 }],
+//   },
+//   {
+//     investmentRating: 5,
+//     ticker: "ABC",
+//     name: "Google",
+//     data: [{ date: new Date(), price: 51, dcf: 78 }],
+//   },
+// ];
+
+// // Print unsorted array
+// console.log("Unsorted");
+// for (let i = 0; i < arr.length; i++) console.log(arr[i]);
+
+// radixsort(arr, arr.length);
+
+// console.log("\n");
+// console.log("Sorted");
+// // Print sorted array
+// for (let i = 0; i < arr.length; i++) console.log(arr[i]);
+
+export default radixsort;
