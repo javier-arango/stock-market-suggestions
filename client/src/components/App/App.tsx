@@ -32,18 +32,12 @@ function App() {
         })
     );
 
+    // Get the data of the stocks
     useEffect(() => {
         fetch("/api/data")
             .then((res) => res.json())
             .then((data) => setStocks(data));
     }, []);
-
-    // Get the list of stocks for the stockList component
-    const getStocks = () => {
-        // Will perform a request to server to get the list of stocks
-        // See template of Data to be returned about the component function
-        // Will use the sortAlgorithm state to know which sort algorith to use
-    };
 
     // Get the stock data needed for stockVIew When user clicks one stockk in the list
     const getStockData = (sticker: string) => {
