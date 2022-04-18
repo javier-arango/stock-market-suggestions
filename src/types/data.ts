@@ -1,13 +1,13 @@
-import { getData } from "./file-handling/readFile";
-
 /** Datum object from "API" */
 export type Datum = {
-  date: Date;
+  date: string;
   price: number;
   dcf: number;
+  name: string;
+  ticker: string;
 };
 
-// /** Extracted stock information from Data */
+/** Extracted stock information from Data */
 export type Stock = {
   investmentRating: number;
   ticker: string;
@@ -15,8 +15,5 @@ export type Stock = {
   data: Array<Datum>; // sorted by date
 };
 
-const filePath = "../data/stock_data.json";
-getData(filePath);
-
-// /** Processed data to be delivered to Frontend */
+/** Processed data to be delivered to Frontend */
 export type Stocks = Array<Stock>;

@@ -25,11 +25,11 @@ function StocksList(props: any) {
           >
             <div className="row">
               <div className="col-8">
-                <h5 className="sticker">{stock.sticker}</h5>
+                <h5 className="sticker">{stock.ticker}</h5>
                 <small className="name">{stock.name}</small>
               </div>
               <div className="col-4 d-flex justify-content-center align-items-center">
-                <h5 className="p-red">${stock.price}</h5>
+                <h5 className="p-red">${stock.data?.[0]?.price}</h5>
               </div>
             </div>
           </li>

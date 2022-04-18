@@ -26,7 +26,7 @@ function partition(arr: Stocks, low: number, high: number): number {
 }
 
 /** Quick Sort */
-function quickSort(arr: Stocks, low: number, high: number): void {
+function quickSort(arr: Stocks, low: number = 0, high: number = arr.length - 1): void {
   /** Ascending sort */
   if (low < high) {
     // Partition index
