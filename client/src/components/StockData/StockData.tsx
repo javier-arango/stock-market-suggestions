@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 function StockData(props: any) {
   const [currentTime, setCurrentTime] = useState(1);
@@ -27,16 +27,16 @@ function StockData(props: any) {
               <div className="">
                 <span
                   className={`badge ${
-                    props.stock.data?.[0]?.dcf < 0
+                    props.stock?.investmentRating > 0
                       ? "badge-underpriced"
                       : "badge-overpriced"
                   }`}
                 >
-                  {props.stock.data?.[0]?.dcf < 0
+                  {props.stock?.investmentRating > 0
                     ? "underpriced"
                     : "overpriced"}
                   <span className="badge">
-                    {props.stock.data?.[0]?.dcf.toFixed(2)}
+                    {props.stock?.investmentRating?.toFixed(2)}
                   </span>
                 </span>
               </div>
@@ -44,7 +44,7 @@ function StockData(props: any) {
             <div className=""></div>
             <div className="d-flex flex-row justify-content-end border-top p-2">
               {timeFrame.map((time: string, index) => {
-                const isActive = index == currentTime ? "t-active" : "";
+                const isActive = index === currentTime ? "t-active" : "";
                 return (
                   <small
                     key={index}

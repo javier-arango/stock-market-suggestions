@@ -17,12 +17,8 @@ function StocksList(props: any) {
   return (
     <ul className="list-group">
       {props.stocks.map((stock: any) => {
-        const name = stock.name;
-        const ticker = stock.ticker;
-        const price = stock.data?.[0]?.price.toFixed(2);
-        const dcf = stock.data?.[0]?.dcf;
-        const classRating = dcf < 0 ? "badge-underpriced" : "badge-overpriced";
-        const classPrice = stock.data?.[0]?.price < stock.data?.[1]?.price ? "p-red" : "p-green";
+        const { name, ticker, investmentRating, data: [{ price: latestPrice }, { price: yesterdayPrice }] } = stock;
+        const classPrice = latestPrice < yesterdayPrice ? "p-red" : "p-green";
 
         return (
           <li
@@ -36,11 +32,11 @@ function StocksList(props: any) {
                 <small className="name">{name}</small>
               </div>
               <div className="col-4 d-flex flex-column align-items-end">
-                <h5 className={classPrice}>${price}</h5>
-                <span className={`badge ${classRating}`}>
-                  {dcf < 0 ? "underpriced" : "overpriced"}
+                <h5 className={classPrice}>${latestPrice?.toFixed(2)}</h5>
+                <span className={`badge ${classPrice}`}>
+                  {investmentRating < 0 ? "underpriced" : "overpriced"}
                   <span className="badge">
-                    {dcf.toFixed(2)}
+                    {investmentRating.toFixed(2)}
                   </span>
                 </span>
               </div>

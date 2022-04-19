@@ -35,8 +35,8 @@ function App() {
   // Get the data of the stocks
   useEffect(() => {
     let endpoint: string = "/api/data/";
-    if (sortAlgorithm == "quick") endpoint = "/api/data/quicksort";
-    else if (sortAlgorithm == "radix") endpoint = "/api/data/radixsort";
+    if (sortAlgorithm === "quick") endpoint = "/api/data/quicksort";
+    else if (sortAlgorithm === "radix") endpoint = "/api/data/radixsort";
     fetch(endpoint)
       .then((res) => res.json())
       .then((data) => setStocks(data));
@@ -46,7 +46,7 @@ function App() {
   const getStockData = (ticker: string) => {
     // Get the stock object from the stocks data
     const stockData = stocks.filter((stock: any) => {
-      if (stock.ticker == ticker) return stock;
+      if (stock.ticker === ticker) return stock;
     });
 
     // Update the stock to view state
@@ -61,7 +61,6 @@ function App() {
   };
 
   const searchStock = (searchValue: string) => {};
-
   return (
     <div id="container" className="container-fluid vh-100">
       <div className="row vh-100">
