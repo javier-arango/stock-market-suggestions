@@ -20,7 +20,58 @@ const getRandomNumber = () => {
 
 function App() {
     const [sortAlgorithm, setSortAlgorithm] = useState(algorithms[0]);
-    const [stocks, setStocks] = useState([]);
+    const [stocks, setStocks] = useState([
+      {
+        name: "Apple",
+        ticker: "AAPL",
+        data: [
+          {
+            price: 23.45657657,
+            dcf: -2.34543543,
+          },
+        ],
+      },
+      {
+        name: "Palantir",
+        ticker: "PLTR",
+        data: [
+          {
+            price: 23.45657657,
+            dcf: -2.34543543,
+          },
+        ],
+      },
+      {
+        name: "Sofi",
+        ticker: "SOFI",
+        data: [
+          {
+            price: 23.45657657,
+            dcf: 2.34543543,
+          },
+        ],
+      },
+      {
+        name: "Nio car",
+        ticker: "NIO",
+        data: [
+          {
+            price: 23.45657657,
+            dcf: -2.34543543,
+          },
+        ],
+      },
+      {
+        name: "Snapchat",
+        ticker: "SNAP",
+        data: [
+          {
+            price: 23.45657657,
+            dcf: -2.34543543,
+          },
+        ],
+      },
+    ]);
     const [stockToView, setStockToView] = useState({});
     const [marketInfo, setMarketInfo] = useState(
         markets.map((market) => {
@@ -33,26 +84,21 @@ function App() {
     );
 
     // Get the data of the stocks
-    useEffect(() => {
-        fetch("/api/data")
-            .then((res) => res.json())
-            .then((data) => setStocks(data));
-    }, []);
+    // useEffect(() => {
+    //     fetch("/api/data")
+    //         .then((res) => res.json())
+    //         .then((data) => setStocks(data));
+    // }, []);
 
     // Get the stock data needed for stockVIew When user clicks one stockk in the list
-    const getStockData = (sticker: string) => {
-        // Debugging
-        console.log(sticker + " is requesting to be viewed");
-
-        // Test setting template data
-        setStockToView(() => {
-            return {
-                investmentRating: 23,
-                name: "Palantir",
-                sticker: "PLTR",
-                data: [{ date: "2022-01-01", price: 20.9, dcf: 23.4 }],
-            };
+    const getStockData = (ticker: string) => {
+        // Get the stock object from the stocks data
+        const stockData = stocks.filter((stock:any) => {
+          if(stock.ticker == ticker) return stock;
         });
+
+        // Update the stock to view state
+        setStockToView(stockData[0]);
     };
 
     // Handle the click of the button to change the sorting algorithm
