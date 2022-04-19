@@ -13,7 +13,7 @@ function StockData(props: any) {
   return (
     <div className="row w-100 h-100 pb-5 mt-4 d-flex justify-content-center">
       <div className="col-10 chart-info w-80 rounded">
-        {Object.keys(props.data).length === 0 ? (
+        {Object.keys(props.stock).length === 0 ? (
           <div className="w-100 h-100 d-flex justify-content-center align-items-center no-stock-selected">
             Select a stock from the list
           </div>
@@ -21,12 +21,24 @@ function StockData(props: any) {
           <>
             <div className="d-flex flex-row justify-content-between border-bottom p-2">
               <div className="">
-                <h5 className="sticker">{props.data.sticker}</h5>
-                <small className="name">{props.data.name}</small>
+                <h5 className="sticker">{props.stock.ticker}</h5>
+                <small className="name">{props.stock.name}</small>
               </div>
               <div className="">
-                <h5 className="rating">Investment Rating</h5>
-                <small className="recom">Apple</small>
+                <span
+                  className={`badge ${
+                    props.stock.data?.[0]?.dcf < 0
+                      ? "badge-underpriced"
+                      : "badge-overpriced"
+                  }`}
+                >
+                  {props.stock.data?.[0]?.dcf < 0
+                    ? "underpriced"
+                    : "overpriced"}
+                  <span className="badge">
+                    {props.stock.data?.[0]?.dcf.toFixed(2)}
+                  </span>
+                </span>
               </div>
             </div>
             <div className=""></div>
