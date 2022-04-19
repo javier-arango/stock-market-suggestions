@@ -38,7 +38,7 @@ const addDataToStock = (stock: Stock, datum: Datum): void => {
   stock.data.push({
     name: datum.name,
     ticker: datum.ticker,
-    date: new Date(datum.date),
+    date: datum.date,
     price: datum.price,
     dcf: datum.dcf,
   });

@@ -1,6 +1,6 @@
 /** Datum object from "API" */
 export type Datum = {
-  date: Date;
+  date: string;
   price: number;
   dcf: number;
   name: string;
