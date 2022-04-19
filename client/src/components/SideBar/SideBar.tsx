@@ -17,8 +17,11 @@ function SideBar(props: any) {
       <SearchStock />
       <SortSelection
         algorithms={props.algorithms}
+        sortingOrders={props.sortingOrders}
         selAlgo={props.selAlgo}
         changeAlgorithm={props.changeAlgorithm}
+        selOrder={props.selOrder}
+        changeSortingOrder={props.changeSortingOrder}
       />
       {props.stocks.length == 0 ? (
         <div className="w-100 h-50 d-flex justify-content-center align-items-center">
