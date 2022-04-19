@@ -5,6 +5,7 @@ import StockView from "../StockView/StockView";
 
 const markets = ["DOW JONES", "NASDAQ", "S&P 500"];
 const algorithms = ["radix", "quick"];
+const sortingOrders = ["asc", "dsc"];
 
 // Get a random number from -20 to 20 for the percentage
 const getRandomPercent = () => {
@@ -20,6 +21,7 @@ const getRandomNumber = () => {
 
 function App() {
   const [sortAlgorithm, setSortAlgorithm] = useState("");
+  const [sortingOrder, setSortingOrder] = useState("");
   const [stocks, setStocks] = useState([]);
   const [stockToView, setStockToView] = useState({});
   const [marketInfo, setMarketInfo] = useState(
@@ -34,13 +36,21 @@ function App() {
 
   // Get the data of the stocks
   useEffect(() => {
+    setStocks([]);
     let endpoint: string = "/api/data/";
-    if (sortAlgorithm === "quick") endpoint = "/api/data/quicksort";
-    else if (sortAlgorithm === "radix") endpoint = "/api/data/radixsort";
+
+    if (sortAlgorithm === "quick") {
+      endpoint += "quicksort";
+      if (sortingOrder === "asc") endpoint += "/asc";
+    } else if (sortAlgorithm === "radix") {
+      endpoint += "radixsort";
+      if (sortingOrder === "asc") endpoint += "/asc";
+    }
+    console.log("Request : " + endpoint);
     fetch(endpoint)
       .then((res) => res.json())
       .then((data) => setStocks(data));
-  }, []);
+  }, [sortAlgorithm, sortingOrder]);
 
   // Get the stock data needed for stockVIew When user clicks one stockk in the list
   const getStockData = (ticker: string) => {
@@ -60,6 +70,13 @@ function App() {
     setSortAlgorithm(() => algo);
   };
 
+  // Handle the click of the button to change the sorting order
+  const changeSortingOrder = (order: string) => {
+    // DEbugging
+    console.log(order);
+    setSortingOrder(order);
+  };
+
   const searchStock = (searchValue: string) => {};
   return (
     <div id="container" className="container-fluid vh-100">
@@ -69,7 +86,10 @@ function App() {
           listClickHandler={getStockData}
           algorithms={algorithms}
           selAlgo={sortAlgorithm}
+          sortingOrders={sortingOrders}
+          selOrder={sortingOrder}
           changeAlgorithm={changeAlgorithm}
+          changeSortingOrder={changeSortingOrder}
         />
         <StockView stock={stockToView} marketInfo={marketInfo} />
       </div>
