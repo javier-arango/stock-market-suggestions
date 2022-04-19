@@ -6,7 +6,7 @@
     cursor: pointer;
   }
   
-  .list-group .stikcer {
+  .list-group .tikcer {
     color: red;
   }
   
@@ -20,7 +20,7 @@
     border-radius: 0px !important;
   }
   
-  .list-group .active .sticker {
+  .list-group .active .ticker {
     color: white;
   }
   
@@ -30,4 +30,16 @@
 
   .spinner-border{
     border-color: #44ffd2 #44ffd2 #44ffd2 #ffffff;
+  }
+
+  .badge-overpriced{
+    background-color: #ec2020;
+  }
+
+  .badge-underpriced{
+    background-color: #379634;
+  }
+
+  .badge-light{
+  
   }
