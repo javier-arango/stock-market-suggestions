@@ -49,7 +49,10 @@ function App() {
     console.log("Request : " + endpoint);
     fetch(endpoint)
       .then((res) => res.json())
-      .then((data) => setStocks(data));
+      .then((data) => {
+        console.log(data);
+        setStocks(data);
+      });
   }, [sortAlgorithm, sortingOrder]);
 
   // Get the stock data needed for stockVIew When user clicks one stockk in the list

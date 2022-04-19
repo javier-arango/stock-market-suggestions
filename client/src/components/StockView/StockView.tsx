@@ -1,6 +1,6 @@
 import React from 'react';
-import StockMarketInfo from '../StockMarketInfo/StockMarketInfo';
-import StockData from '../StockData/StockData';
+import StockMarketInfo from './StockMarketInfo/StockMarketInfo';
+import StockData from './StockData/StockData';
 import './stockview.css';
 
 function StockView(props: any) {

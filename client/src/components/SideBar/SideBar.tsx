@@ -1,7 +1,7 @@
 import React from "react";
-import StocksList from "../StocksList/StocksList";
-import SearchStock from "../SearchStock/SearchStock";
-import SortSelection from "../SortSelection/SortSelection";
+import StocksList from "./StocksList/StocksList";
+import SearchStock from "./SearchStock/SearchStock";
+import SortSelection from "./SortSelection/SortSelection";
 import logo from "./../../assets/logo.svg";
 import "./sidebar.css";
 
