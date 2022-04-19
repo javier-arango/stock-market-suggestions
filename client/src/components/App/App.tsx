@@ -19,7 +19,7 @@ const getRandomNumber = () => {
 };
 
 function App() {
-  const [sortAlgorithm, setSortAlgorithm] = useState(algorithms[0]);
+  const [sortAlgorithm, setSortAlgorithm] = useState("");
   const [stocks, setStocks] = useState([]);
   const [stockToView, setStockToView] = useState({});
   const [marketInfo, setMarketInfo] = useState(
