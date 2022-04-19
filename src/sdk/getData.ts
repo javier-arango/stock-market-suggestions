@@ -38,7 +38,7 @@ const addDataToStock = (stock: Stock, datum: Datum): void => {
   stock.data.push({
     name: datum.name,
     ticker: datum.ticker,
-    date: datum.date,
+    date: new Date(datum.date),
     price: datum.price,
     dcf: datum.dcf,
   });
@@ -47,11 +47,11 @@ const addDataToStock = (stock: Stock, datum: Datum): void => {
 /** Process the data from json file */
 const getProcessedData = (): Stocks => {
   // Unprocessed data
-  const obj: Array<Datum> = data as Array<Datum>;
+  const obj: any = data; // Load json data
 
   // Varibales
   const dataMap = new Map(); // Map - (key: ticker, value: index)
-  const stocks: Array<Stock> = []; // Store processed data
+  const stocks: Stocks = []; // Store processed data
 
   // Add the stock data
   let index: number = 0; // Array index
@@ -73,7 +73,7 @@ const getProcessedData = (): Stocks => {
 
   // Calculate the investing rating
   dataMap.forEach((data: any) => {
-    sortDates(stocks[data].data); // Sort dates
+    //sortDates(stocks[data].data); // Sort dates
     stocks[data].investmentRating = findInvestmentRating(stocks[data].data); // Calculate investing rating
   });
 
