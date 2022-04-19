@@ -7,7 +7,10 @@ import "./sidebar.css";
 
 function SideBar(props: any) {
   return (
-    <div id="sidebar" className="col-4 h-100 p-0">
+    <div
+      id="sidebar"
+      className="col-4 h-100 p-0 d-flex flex-column overflow-hidden"
+    >
       <div className="w-100 my-2 d-flex justify-content-center">
         <img src={logo} width="150" alt="logo" />
       </div>

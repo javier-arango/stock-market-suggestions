@@ -4,7 +4,7 @@ import SideBar from "../SideBar/SideBar";
 import StockView from "../StockView/StockView";
 
 const markets = ["DOW JONES", "NASDAQ", "S&P 500"];
-const algorithms = ["merge", "quick"];
+const algorithms = ["radix", "quick"];
 
 // Get a random number from -20 to 20 for the percentage
 const getRandomPercent = () => {
@@ -34,9 +34,12 @@ function App() {
 
   // Get the data of the stocks
   useEffect(() => {
-      fetch("/api/data")
-          .then((res) => res.json())
-          .then((data) => setStocks(data));
+    let endpoint: string = "/api/data/";
+    if (sortAlgorithm == "quick") endpoint = "/api/data/quicksort";
+    else if (sortAlgorithm == "radix") endpoint = "/api/data/radixsort";
+    fetch(endpoint)
+      .then((res) => res.json())
+      .then((data) => setStocks(data));
   }, []);
 
   // Get the stock data needed for stockVIew When user clicks one stockk in the list
