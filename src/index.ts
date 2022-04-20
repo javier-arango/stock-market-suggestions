@@ -48,8 +48,10 @@ app.get("/api/data/radixsort/asc", (req: Request, res: Response) => {
   res.send(radixSort(stocks, "asc"));
 });
 
+// Connect front with end
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
 
+// Listening on port
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
