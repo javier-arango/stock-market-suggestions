@@ -14,7 +14,7 @@ function SideBar(props: any) {
       <div className="w-100 my-2 d-flex justify-content-center">
         <img src={logo} width="150" alt="logo" />
       </div>
-      <SearchStock />
+      <SearchStock searchStock={props.searchStock} />
       <SortSelection
         algorithms={props.algorithms}
         sortingOrders={props.sortingOrders}

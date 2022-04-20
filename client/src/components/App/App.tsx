@@ -33,6 +33,8 @@ function App() {
       };
     })
   );
+  const [searchValue, setSearchValue] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   // Get the data of the stocks
   useEffect(() => {
@@ -50,7 +52,6 @@ function App() {
     fetch(endpoint)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setStocks(data);
       });
   }, [sortAlgorithm, sortingOrder]);
@@ -75,18 +76,37 @@ function App() {
 
   // Handle the click of the button to change the sorting order
   const changeSortingOrder = (order: string) => {
-    // DEbugging
-    console.log(order);
     setSortingOrder(order);
   };
 
-  const searchStock = (searchValue: string) => {};
+  const searchStock = (searchTerm: string) => {
+    console.log("Received value to search : " + searchTerm);
+    setSearchValue(searchTerm);
+    console.log("Update searchValue state : " + searchTerm);
+    setSearchResults([]);
+    console.log("Cleared search Results");
+    const results = stocks.filter((stock: any) => {
+      if (
+        stock.name.toUpperCase().indexOf(searchTerm.toUpperCase()) > -1 ||
+        stock.ticker.toUpperCase().indexOf(searchTerm.toUpperCase()) > -1
+      ) {
+        return true;
+      }
+      return false;
+    });
+    console.log("Filtered results:");
+    console.log(results);
+
+    // Update result state
+    setSearchResults(results);
+    console.log("Update researchResults state .");
+  };
 
   return (
     <div id="container" className="container-fluid vh-100">
       <div className="row vh-100">
         <SideBar
-          stocks={stocks}
+          stocks={searchValue == "" ? stocks : searchResults}
           listClickHandler={getStockData}
           algorithms={algorithms}
           selAlgo={sortAlgorithm}
@@ -94,6 +114,7 @@ function App() {
           selOrder={sortingOrder}
           changeAlgorithm={changeAlgorithm}
           changeSortingOrder={changeSortingOrder}
+          searchStock={searchStock}
         />
         <StockView stock={stockToView} marketInfo={marketInfo} />
       </div>
