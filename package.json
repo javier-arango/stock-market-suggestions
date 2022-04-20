@@ -11,7 +11,8 @@
     "start": "node server/index.ts",
     "dev:server": "nodemon --watch './**/*.ts' --exec \"node --experimental-specifier-resolution=node --loader ts-node/esm\" src/index.ts",
     "dev:deploy": "npm run client:build && npm run dev:server",
-    "dev:install": "npm i && cd client && npm i && cd .."
+    "dev:install": "npm i && cd client && npm i && cd ..",
+    "launch": "npm run dev:install && npm run dev:deploy"
   },
   "keywords": [],
   "author": "",
