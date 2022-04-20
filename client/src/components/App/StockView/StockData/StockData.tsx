@@ -84,7 +84,7 @@ function StockData(props: any) {
                     ? "underpriced"
                     : "overpriced"}
                   <span className="badge">
-                    {props.stock?.investmentRating?.toFixed(2)}
+                    {framedRating?.toFixed(2)}
                   </span>
                 </span>
               </div>

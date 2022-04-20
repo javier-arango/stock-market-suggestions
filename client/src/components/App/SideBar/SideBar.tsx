@@ -14,7 +14,6 @@ function SideBar(props: any) {
       <div className="w-100 my-2 d-flex justify-content-center">
         <img src={logo} width="150" alt="logo" />
       </div>
-      <SearchStock searchStock={props.searchStock} />
       <SortSelection
         algorithms={props.algorithms}
         sortingOrders={props.sortingOrders}
@@ -23,7 +22,8 @@ function SideBar(props: any) {
         selOrder={props.selOrder}
         changeSortingOrder={props.changeSortingOrder}
       />
-      {props.stocks.length == 0 ? (
+      <SearchStock searchStock={props.searchStock} />
+      {props.stocks.length === 0 ? (
         <div className="w-100 h-50 d-flex justify-content-center align-items-center">
           <div className="spinner-border" role="status">
             <span className="sr-only"></span>

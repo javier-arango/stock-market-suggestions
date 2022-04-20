@@ -38,10 +38,7 @@ function App() {
   const [searchResults, setSearchResults] = useState<Array<any>>([]);
 
   // Get the data of the stocks
-  useEffect(() => {
-    if (fakeData) {
-      return;
-    }    
+  useEffect(() => {   
     let endpoint: string = "/api/data/";
 
     if (sortAlgorithm === "quick") {
@@ -62,6 +59,7 @@ function App() {
   // Get the stock data needed for stockVIew When user clicks one stockk in the list
   const getStockData = (ticker: string) => {
     // Get the stock object from the stocks data
+    // eslint-disable-next-line array-callback-return
     const stockData = stocks.filter((stock: any) => {
       if (stock.ticker === ticker) return stock;
     });
@@ -108,7 +106,7 @@ function App() {
   return (
     <div id="container" className="app">
         <SideBar
-          stocks={searchValue == "" ? stocks : searchResults}
+          stocks={searchValue === "" ? stocks : searchResults}
           listClickHandler={getStockData}
           algorithms={algorithms}
           selAlgo={sortAlgorithm}
