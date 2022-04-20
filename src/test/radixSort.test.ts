@@ -1,5 +1,5 @@
 /** Import data types */
-import { Datum, Stocks } from "../types/data";
+import { Datum, Stock, Stocks } from "../types/data";
 
 /** Sorting type */
 type SortingType = "desc" | "asc";
@@ -16,15 +16,11 @@ const getMax = (arr: Stocks, n: number): number => {
   return max;
 };
 
-// Add values to final array | Fix array
-const addValuesToFixArr = (arr: Stocks, index: number, addFrom: Stocks) => {
-  // Copy the output array to the unsorted array | Negative values
-  for (let i = 0; i < addFrom.length; i++) {
-    if (addFrom[i] !== undefined) {
-      arr[index] = addFrom[i];
-      index++;
-    }
-  }
+/** Swap two elements */
+const swap = (arr: Stocks, from: number, to: number): void => {
+  let temp = arr[from];
+  arr[from] = arr[to];
+  arr[to] = temp;
 };
 
 // Fix final array just in case there are negatives numbers
@@ -34,57 +30,50 @@ const fixFinalArr = (
   n: number = arr.length
 ) => {
   // Data to split the array between positive and negative
-  const positiveArr: Stocks = [];
-  const negativeArr: Stocks = [];
+  const copyOfData: Map<number, Stock> = new Map();
+  let positiveCount = 0; // Total positives numbers in the array
+  let negativeCount = 0; // Total negative numbers in the array
+  let index = 0; // Index for positive numbers
+  let changeCount = 0; // Change count for negative number
 
   // Split the output array between positive and negative arrays
   for (let i = 0; i < n; i++) {
     // Find positive numbers | if sign() is 1 the number is positive
-    if (Math.sign(arr[i].investmentRating) === 1) {
-      positiveArr.push(arr[i]);
-    }
+    if (Math.sign(arr[i].investmentRating) >= 0) positiveCount++;
     // Find negative numbers | if sign() is 1 the number is positive
-    else if (Math.sign(arr[i].investmentRating) === -1) {
-      negativeArr.push(arr[i]);
-    }
+    else if (Math.sign(arr[i].investmentRating) === -1) negativeCount++;
+
+    // Copy data to map with corresponing index
+    copyOfData.set(i, arr[i]);
   }
 
-  // Check if ascedning order
-  if (type == "asc") {
-    // Index to keep track of the real index of the final array
-    let index = 0;
-    // Copy the output array to the unsorted array | Negative values
-    for (let i = 0; i < negativeArr.length; i++) {
-      if (negativeArr[i] !== undefined) {
-        arr[index] = negativeArr[i];
+  // Add values to corresponding place
+  for (let i = 0; i < n; i++) {
+    // Fix sort for descedning
+    if (type === "desc") {
+      // Move negative that are on top to the bottom
+      if (negativeCount !== 0 && changeCount < negativeCount) {
+        arr[positiveCount] = copyOfData.get(i)!;
+        positiveCount++;
+        changeCount++;
+      }
+      // Move positive to the correct place
+      else {
+        arr[index] = copyOfData.get(i)!;
         index++;
       }
     }
-
-    // Copy the output array to the unsorted array | Positive values
-    for (let i = 0; i < positiveArr.length; i++) {
-      if (positiveArr[i] !== undefined) {
-        arr[index] = positiveArr[i];
-        index++;
+    // Fix sort for ascending
+    else {
+      // Move negative that are on bottom to the top
+      if (negativeCount !== 0 && changeCount < negativeCount) {
+        arr[i] = copyOfData.get(positiveCount)!; // Change values
+        positiveCount++;
+        changeCount++;
       }
-    }
-  }
-  // Check if descending order
-  else {
-    // Index to keep track of the real index of the final array
-    let index = 0;
-    // Copy the output array to the unsorted array | Positive values
-    for (let i = 0; i < positiveArr.length; i++) {
-      if (positiveArr[i] !== undefined) {
-        arr[index] = positiveArr[i];
-        index++;
-      }
-    }
-
-    // Copy the output array to the unsorted array | Negative values
-    for (let i = 0; i < negativeArr.length; i++) {
-      if (negativeArr[i] !== undefined) {
-        arr[index] = negativeArr[i];
+      // Move positive to the correct place
+      else {
+        arr[i] = copyOfData.get(index)!; // Change values
         index++;
       }
     }
@@ -178,6 +167,12 @@ const arr: Stocks = [
     data: [],
   },
   {
+    investmentRating: 0,
+    ticker: "APPL",
+    name: "Apple",
+    data: [],
+  },
+  {
     investmentRating: 856.54,
     ticker: "CHI",
     name: "China",
@@ -190,7 +185,13 @@ const arr: Stocks = [
     data: [],
   },
   {
-    investmentRating: -5.8,
+    investmentRating: 0,
+    ticker: "APPL",
+    name: "Apple",
+    data: [],
+  },
+  {
+    investmentRating: 5.8,
     ticker: "MCS",
     name: "Micrsoft",
     data: [],
@@ -208,13 +209,13 @@ const arr: Stocks = [
     data: [],
   },
   {
-    investmentRating: -55.8,
+    investmentRating: 55.8,
     ticker: "ABC",
     name: "Google",
     data: [],
   },
   {
-    investmentRating: -60.8,
+    investmentRating: 60.8,
     ticker: "ABC",
     name: "Google",
     data: [],
@@ -225,7 +226,7 @@ const arr: Stocks = [
 console.log("Unsorted");
 for (let i = 0; i < arr.length; i++) console.log(arr[i]);
 
-const data = radixSort(arr);
+const data = radixSort(arr, "asc");
 
 console.log("\n");
 console.log("Sorted");
