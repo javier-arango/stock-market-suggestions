@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import fakeData from './fake-data.json'
+import fakeData from "./fake-data.json";
 import SideBar from "./SideBar/SideBar";
 import StockView from "./StockView/StockView";
 
@@ -20,10 +20,13 @@ const getRandomNumber = () => {
   return number.toFixed(2);
 };
 
+// fakeData as Array<any>
+
 function App() {
   const [sortAlgorithm, setSortAlgorithm] = useState("");
+  const [time, setTime] = useState(0);
   const [sortingOrder, setSortingOrder] = useState("");
-  const [stocks, setStocks] = useState(fakeData as Array<any>);
+  const [stocks, setStocks] = useState([]);
   const [stockToView, setStockToView] = useState({});
   const [marketInfo, setMarketInfo] = useState(
     markets.map((market) => {
@@ -38,7 +41,7 @@ function App() {
   const [searchResults, setSearchResults] = useState<Array<any>>([]);
 
   // Get the data of the stocks
-  useEffect(() => {   
+  useEffect(() => {
     let endpoint: string = "/api/data/";
 
     if (sortAlgorithm === "quick") {
@@ -48,10 +51,18 @@ function App() {
       endpoint += "radixsort";
       if (sortingOrder === "asc") endpoint += "/asc";
     }
+
+    // get the current time
+    const start = new Date().getTime();
     fetch(endpoint)
-      .then((res) => res.json())
+      .then((res) => {
+        // Get the current time
+        const end = new Date().getTime();
+        const timeElapsed = end - start;
+        setTime(timeElapsed);
+        return res.json();
+      })
       .then((data) => {
-        console.log(data);
         setStocks(data);
       });
   }, [sortAlgorithm, sortingOrder]);
@@ -94,24 +105,26 @@ function App() {
     // Update result state
     setSearchResults(results);
   };
-  
+
   return (
     <div id="container" className="app">
-        <SideBar
-          stocks={searchValue === "" ? stocks : searchResults}
-          listClickHandler={getStockData}
-          algorithms={algorithms}
-          selAlgo={sortAlgorithm}
-          sortingOrders={sortingOrders}
-          selOrder={sortingOrder}
-          changeAlgorithm={changeAlgorithm}
-          changeSortingOrder={changeSortingOrder}
-          searchStock={searchStock}
-          stockSelected={stockToView}
-        />
-        <StockView stock={stockToView} marketInfo={marketInfo} />
+      <SideBar
+        stocks={searchValue === "" ? stocks : searchResults}
+        listClickHandler={getStockData}
+        algorithms={algorithms}
+        selAlgo={sortAlgorithm}
+        sortingOrders={sortingOrders}
+        selOrder={sortingOrder}
+        changeAlgorithm={changeAlgorithm}
+        changeSortingOrder={changeSortingOrder}
+        searchStock={searchStock}
+        stockSelected={stockToView}
+        timeElapsed={time}
+        searching={searchValue === "" ? false : true}
+      />
+      <StockView stock={stockToView} marketInfo={marketInfo} />
     </div>
   );
-};
+}
 
 export default App;
