@@ -68,4 +68,5 @@ app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
 
+// Listening on port
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

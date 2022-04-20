@@ -169,4 +169,67 @@ const radixSort = (arr: Stocks, type: SortingType = "desc"): Stocks => {
   return data;
 };
 
+/** Run example */
+const arr: Stocks = [
+  {
+    investmentRating: 89.01,
+    ticker: "APPL",
+    name: "Apple",
+    data: [],
+  },
+  {
+    investmentRating: 856.54,
+    ticker: "CHI",
+    name: "China",
+    data: [],
+  },
+  {
+    investmentRating: 0.545,
+    ticker: "TWI",
+    name: "Twitter",
+    data: [],
+  },
+  {
+    investmentRating: -5.8,
+    ticker: "MCS",
+    name: "Micrsoft",
+    data: [],
+  },
+  {
+    investmentRating: 0.005,
+    ticker: "FBC",
+    name: "Facebook",
+    data: [],
+  },
+  {
+    investmentRating: 0.003,
+    ticker: "FBC",
+    name: "Facebook",
+    data: [],
+  },
+  {
+    investmentRating: -55.8,
+    ticker: "ABC",
+    name: "Google",
+    data: [],
+  },
+  {
+    investmentRating: -60.8,
+    ticker: "ABC",
+    name: "Google",
+    data: [],
+  },
+];
+
+// // Print unsorted array
+console.log("Unsorted");
+for (let i = 0; i < arr.length; i++) console.log(arr[i]);
+
+const data = radixSort(arr);
+
+console.log("\n");
+console.log("Sorted");
+// Print sorted array
+for (let i = 0; i < data.length; i++) console.log(data[i]);
+
 export { radixSort };
