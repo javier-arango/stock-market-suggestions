@@ -22,8 +22,6 @@ function StockMarketInfo(props: any) {
             break;
     }
 
-    console.log(framedRating);
-
     return (
         <div className="row w-100 mb-3 d-flex justify-content-around">
             <div className="col-10 market-info w-80 rounded pt-2 pb-2">

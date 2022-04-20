@@ -4,36 +4,14 @@ import fakeData from './fake-data.json'
 import SideBar from "./SideBar/SideBar";
 import StockView from "./StockView/StockView";
 
-const markets = ["DOW JONES", "NASDAQ", "S&P 500"];
 const algorithms = ["radix", "quick"];
 const sortingOrders = ["asc", "dsc"];
-
-// Get a random number from -20 to 20 for the percentage
-const getRandomPercent = () => {
-  const number = Math.random() * (20 - -20) + -20;
-  return number.toFixed(2);
-};
-
-// Get a random number from 3000 to 16000 for the current value
-const getRandomNumber = () => {
-  const number = Math.random() * (16000 - 3000) + 3000;
-  return number.toFixed(2);
-};
 
 function App() {
   const [sortAlgorithm, setSortAlgorithm] = useState("");
   const [sortingOrder, setSortingOrder] = useState("");
   const [stocks, setStocks] = useState(fakeData as Array<any>);
   const [stockToView, setStockToView] = useState({});
-  const [marketInfo, setMarketInfo] = useState(
-    markets.map((market) => {
-      return {
-        name: market,
-        index: getRandomNumber(),
-        percentage: getRandomPercent(),
-      };
-    })
-  );
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<Array<any>>([]);
 
@@ -51,7 +29,7 @@ function App() {
     fetch(endpoint)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log(data[0]);
         setStocks(data);
       });
   }, [sortAlgorithm, sortingOrder]);
@@ -109,7 +87,7 @@ function App() {
           searchStock={searchStock}
           stockSelected={stockToView}
         />
-        <StockView stock={stockToView} marketInfo={marketInfo} />
+        <StockView stock={stockToView} />
     </div>
   );
 };
