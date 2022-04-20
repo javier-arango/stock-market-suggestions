@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { fileURLToPath } from "url";
 import path from "path";
-import { getProcessedData } from "./sdk/getData";
+import { getProcessedData, findInvestmentRating } from "./sdk/getData";
 import { quickSort } from "./sdk/quickSort";
 import { radixSort } from "./sdk/radixSort";
 
@@ -39,16 +39,31 @@ app.get("/api/data/quicksort/asc", (req: Request, res: Response) => {
 // Send data sorted using radixSort in descending order
 app.get("/api/data/radixsort", (req: Request, res: Response) => {
   const stocks = getProcessedData(); // Unsorted data
-  res.send(radixSort(stocks));
+  radixSort(stocks);
+  res.send(stocks);
 });
 
 // Send data sorted using radixSort in ascending order
 app.get("/api/data/radixsort/asc", (req: Request, res: Response) => {
   const stocks = getProcessedData(); // Unsorted data
+  console.log(radixSort(stocks, "asc"));
   res.send(radixSort(stocks, "asc"));
 });
 
-// Connect front with end
+app.get("/api/rating", (req: Request, res: Response) => {
+  const stocks = getProcessedData(); // Unsorted data
+  const { range, company } = req.query;
+  const stock = stocks.find((stock) => stock.ticker === company);
+  if (!stock) {
+    res.send({ error: "Company not found" });
+    return;
+  }
+
+  const rangeNum = range ? parseInt(range as string) : -1;
+
+  res.send({ investmentRating: findInvestmentRating(stock?.data, rangeNum) });
+});
+
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });

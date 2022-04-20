@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 
 function SideBar(props: any) {
-  const [value, setValue] = useState("");
 
   const handleChange = (event: any) => {
-    setValue(event.target.value);
+    const value = event.target.value;
+    console.log("value to search is: " + value);
+    console.log("calling searchStock in Apptsx...");
+    console.log(value);
+    props.searchStock(value);
   };
 
   return (
@@ -12,7 +15,6 @@ function SideBar(props: any) {
       <input
         type="text"
         className="form-control"
-        value={value}
         onChange={handleChange}
       />
       <label htmlFor="floatingInput">Search for a stock</label>

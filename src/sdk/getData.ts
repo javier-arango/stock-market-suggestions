@@ -7,19 +7,29 @@ const sortDates = (dataArr: Array<Datum>) => {
 };
 
 /** Find the investment ating  */
-const findInvestmentRating = (datum: Array<Datum>): number => {
+const findInvestmentRating = (datum: Array<Datum>, range = -1): number => {
+  // If range is not set, set it to the last index
+  let end = range === -1 ? datum.length - 1 : range;
+
   // Stock rating
-  let rating: number = 0;
+  let sumGap: number = 0;
   let dayCount: number = 0;
+  let sumPrice = 0;
 
-  // Find stock rating
-  datum.forEach((data: Datum) => {
-    let dayGap: number = data.dcf - data.price;
-    rating += dayGap;
+  // Find stock sumGap
+  for (let i = 0; i < end; i++) {
+    const { dcf, price } = datum[i];
+    sumGap += dcf - price;
+    sumPrice += price;
     dayCount++;
-  });
+  }
 
-  return rating / dayCount;
+  const averageGap = sumGap / dayCount;
+  const averagePrice = sumPrice / dayCount;
+  const investmentRating = (averageGap / averagePrice) * 10;
+
+  // Calculate the investment rating
+  return parseFloat(investmentRating.toFixed(2));
 };
 
 /** Add stocks to the stocks array object | Stocks */
@@ -82,4 +92,4 @@ const getProcessedData = (): Stocks => {
 };
 
 /** Export processed data funcion */
-export { getProcessedData };
+export { getProcessedData, findInvestmentRating };

@@ -1,5 +1,6 @@
 #sidebar {
   background-color: white;
+  width: 100%;
 }
 
 .list-group {
@@ -44,7 +45,4 @@
 
 .badge-underpriced {
   background-color: #379634;
-}
-
-.badge-light {
 }
