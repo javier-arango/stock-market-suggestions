@@ -8,7 +8,7 @@ Project created using TypeScript, Express, and `create-react-app`. This applicat
   - `index.ts` is the main server file
   - `types` contains all TypeScript types
   - `data` contains all data files
-  - `api` contains all API endpoints
+  - `sdk` contains functions to be used via the API
 - `client` contains frontend
   - `src` contains frontend code
     - `components` contains component files
