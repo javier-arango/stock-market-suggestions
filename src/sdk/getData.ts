@@ -26,7 +26,7 @@ const findInvestmentRating = (datum: Array<Datum>, range = -1): number => {
 
   const averageGap = sumGap / dayCount;
   const averagePrice = sumPrice / dayCount;
-  const investmentRating = (averageGap / averagePrice) * 10;
+  const investmentRating = (averageGap / averagePrice) * 100;
 
   // Calculate the investment rating
   return parseFloat(investmentRating.toFixed(2));
