@@ -83,7 +83,7 @@ const getProcessedData = (): Stocks => {
 
   // Calculate the investing rating
   dataMap.forEach((data: any) => {
-    //sortDates(stocks[data].data); // Sort dates
+    sortDates(stocks[data].data); // Sort dates
     stocks[data].investmentRating = findInvestmentRating(stocks[data].data); // Calculate investing rating
   });
 
