@@ -39,12 +39,14 @@ app.get("/api/data/quicksort/asc", (req: Request, res: Response) => {
 // Send data sorted using radixSort in descending order
 app.get("/api/data/radixsort", (req: Request, res: Response) => {
   const stocks = getProcessedData(); // Unsorted data
-  res.send(radixSort(stocks));
+  radixSort(stocks);
+  res.send(stocks);
 });
 
 // Send data sorted using radixSort in ascending order
 app.get("/api/data/radixsort/asc", (req: Request, res: Response) => {
   const stocks = getProcessedData(); // Unsorted data
+  console.log(radixSort(stocks, "asc"));
   res.send(radixSort(stocks, "asc"));
 });
 

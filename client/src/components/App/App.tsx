@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./app.css";
-import SideBar from "../SideBar/SideBar";
-import StockView from "../StockView/StockView";
+import "./App.css";
+import fakeData from './fake-data.json'
+import SideBar from "./SideBar/SideBar";
+import StockView from "./StockView/StockView";
 
 const markets = ["DOW JONES", "NASDAQ", "S&P 500"];
 const algorithms = ["radix", "quick"];
@@ -22,7 +23,7 @@ const getRandomNumber = () => {
 function App() {
   const [sortAlgorithm, setSortAlgorithm] = useState("");
   const [sortingOrder, setSortingOrder] = useState("");
-  const [stocks, setStocks] = useState([]);
+  const [stocks, setStocks] = useState(fakeData as Array<any>);
   const [stockToView, setStockToView] = useState({});
   const [marketInfo, setMarketInfo] = useState(
     markets.map((market) => {
@@ -36,7 +37,9 @@ function App() {
 
   // Get the data of the stocks
   useEffect(() => {
-    setStocks([]);
+    if (fakeData) {
+      return;
+    }    
     let endpoint: string = "/api/data/";
 
     if (sortAlgorithm === "quick") {
@@ -77,10 +80,13 @@ function App() {
     setSortingOrder(order);
   };
 
-  const searchStock = (searchValue: string) => {};
+  const searchStock = (searchValue: string) => {
+
+  };
+
+  
   return (
-    <div id="container" className="container-fluid vh-100">
-      <div className="row vh-100">
+    <div id="container" className="app">
         <SideBar
           stocks={stocks}
           listClickHandler={getStockData}
@@ -92,7 +98,6 @@ function App() {
           changeSortingOrder={changeSortingOrder}
         />
         <StockView stock={stockToView} marketInfo={marketInfo} />
-      </div>
     </div>
   );
 }

@@ -9,3 +9,9 @@
   .p-red {
     color: #ec4e20;
   }
+
+  .app {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    height: 100vh;
+  }

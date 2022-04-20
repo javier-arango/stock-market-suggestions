@@ -1,4 +1,5 @@
 import React from "react";
+import "./StockList.css"
 
 function StocksList(props: any) {
   const handleCick = (listElement: any, sticker: string) => {
@@ -15,7 +16,7 @@ function StocksList(props: any) {
   };
 
   return (
-    <ul className="list-group">
+    <ul className="list-group" id="stock-list">
       {props.stocks.map((stock: any) => {
         const { name, ticker, investmentRating, data: [{ price: latestPrice }, { price: yesterdayPrice }] } = stock;
         const classPrice = latestPrice < yesterdayPrice ? "p-red" : "p-green";
