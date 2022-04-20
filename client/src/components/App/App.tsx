@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./app.css";
-import SideBar from "../SideBar/SideBar";
-import StockView from "../StockView/StockView";
+import "./App.css";
+import fakeData from './fake-data.json'
+import SideBar from "./SideBar/SideBar";
+import StockView from "./StockView/StockView";
 
 const markets = ["DOW JONES", "NASDAQ", "S&P 500"];
 const algorithms = ["radix", "quick"];
@@ -22,7 +23,7 @@ const getRandomNumber = () => {
 function App() {
   const [sortAlgorithm, setSortAlgorithm] = useState("");
   const [sortingOrder, setSortingOrder] = useState("");
-  const [stocks, setStocks] = useState([]);
+  const [stocks, setStocks] = useState(fakeData as Array<any>);
   const [stockToView, setStockToView] = useState({});
   const [marketInfo, setMarketInfo] = useState(
     markets.map((market) => {
@@ -34,19 +35,18 @@ function App() {
     })
   );
   const [searchValue, setSearchValue] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState<Array<any>>([]);
 
   // Get the data of the stocks
-  useEffect(() => {
-    setStocks([]);
+  useEffect(() => {   
     let endpoint: string = "/api/data/";
 
-    if (sortAlgorithm == "quick") {
+    if (sortAlgorithm === "quick") {
       endpoint += "quicksort";
-      if (sortingOrder == "asc") endpoint += "/asc";
-    } else if (sortAlgorithm == "radix") {
+      if (sortingOrder === "asc") endpoint += "/asc";
+    } else if (sortAlgorithm === "radix") {
       endpoint += "radixsort";
-      if (sortingOrder == "asc") endpoint += "/asc";
+      if (sortingOrder === "asc") endpoint += "/asc";
     }
     fetch(endpoint)
       .then((res) => res.json())
@@ -59,8 +59,9 @@ function App() {
   // Get the stock data needed for stockVIew When user clicks one stockk in the list
   const getStockData = (ticker: string) => {
     // Get the stock object from the stocks data
+    // eslint-disable-next-line array-callback-return
     const stockData = stocks.filter((stock: any) => {
-      if (stock.ticker == ticker) return stock;
+      if (stock.ticker === ticker) return stock;
     });
 
     // Update the stock to view state
@@ -93,12 +94,11 @@ function App() {
     // Update result state
     setSearchResults(results);
   };
-
+  
   return (
-    <div id="container" className="container-fluid vh-100">
-      <div className="row vh-100">
+    <div id="container" className="app">
         <SideBar
-          stocks={searchValue == "" ? stocks : searchResults}
+          stocks={searchValue === "" ? stocks : searchResults}
           listClickHandler={getStockData}
           algorithms={algorithms}
           selAlgo={sortAlgorithm}
@@ -110,9 +110,8 @@ function App() {
           stockSelected={stockToView}
         />
         <StockView stock={stockToView} marketInfo={marketInfo} />
-      </div>
     </div>
   );
-}
+};
 
 export default App;

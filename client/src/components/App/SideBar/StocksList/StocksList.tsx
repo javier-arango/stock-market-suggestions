@@ -34,11 +34,8 @@ function StocksList(props: any) {
               </div>
               <div className="col-4 d-flex flex-column align-items-end">
                 <h5 className={classPrice}>${latestPrice?.toFixed(2)}</h5>
-                <span className={`badge ${classPrice}`}>
-                  {investmentRating < 0 ? "underpriced" : "overpriced"}
-                  <span className="badge">
-                    {investmentRating.toFixed(2)}
-                  </span>
+                <span className={`badge ${investmentRating < 0 ? 'badge-overpriced' : 'badge-underpriced'}`}>
+                  {investmentRating >= 0 ? "underpriced" : "overpriced"}
                 </span>
               </div>
             </div>

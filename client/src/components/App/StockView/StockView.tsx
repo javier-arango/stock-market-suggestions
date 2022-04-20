@@ -7,8 +7,8 @@ function StockView(props: any) {
 
     return (
         <div id="stock-view" className="col d-flex flex-column align-items-center justify-content-center">
-        <StockMarketInfo marketInfo={props.marketInfo}/>
-        <StockData stock={props.stock} />
+            <StockMarketInfo marketInfo={props.marketInfo}/>
+            <StockData stock={props.stock} />
         </div>
     );
 }
