@@ -32,6 +32,7 @@ function SideBar(props: any) {
       ) : (
         <StocksList
           stocks={props.stocks}
+          stockSelected={props.stockSelected}
           listClickHandler={props.listClickHandler}
         />
       )}
