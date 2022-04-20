@@ -23,11 +23,12 @@ function StocksList(props: any) {
         const dcf = stock.data?.[0]?.dcf;
         const classRating = dcf < 0 ? "badge-underpriced" : "badge-overpriced";
         const classPrice = stock.data?.[0]?.price < stock.data?.[1]?.price ? "p-red" : "p-green";
+        const isActive = stock.ticker == props.stockSelected ? "active" : "";
 
         return (
           <li
             key={ticker}
-            className="list-group-item p-2"
+            className={`list-group-item p-2 ${isActive}`}
             onClick={(e) => handleCick(e.currentTarget, ticker)}
           >
             <div className="row">
@@ -39,9 +40,7 @@ function StocksList(props: any) {
                 <h5 className={classPrice}>${price}</h5>
                 <span className={`badge ${classRating}`}>
                   {dcf < 0 ? "underpriced" : "overpriced"}
-                  <span className="badge">
-                    {dcf.toFixed(2)}
-                  </span>
+                  <span className="badge">{dcf.toFixed(2)}</span>
                 </span>
               </div>
             </div>

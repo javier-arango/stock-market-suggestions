@@ -48,10 +48,10 @@ function App() {
       endpoint += "radixsort";
       if (sortingOrder == "asc") endpoint += "/asc";
     }
-    console.log("Request : " + endpoint);
     fetch(endpoint)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setStocks(data);
       });
   }, [sortAlgorithm, sortingOrder]);
@@ -69,8 +69,6 @@ function App() {
 
   // Handle the click of the button to change the sorting algorithm
   const changeAlgorithm = (algo: string) => {
-    // DEbugging
-    console.log(algo);
     setSortAlgorithm(() => algo);
   };
 
@@ -79,12 +77,10 @@ function App() {
     setSortingOrder(order);
   };
 
+  // Perform search on the list of stocks and update the list with results of search
   const searchStock = (searchTerm: string) => {
-    console.log("Received value to search : " + searchTerm);
     setSearchValue(searchTerm);
-    console.log("Update searchValue state : " + searchTerm);
     setSearchResults([]);
-    console.log("Cleared search Results");
     const results = stocks.filter((stock: any) => {
       if (
         stock.name.toUpperCase().indexOf(searchTerm.toUpperCase()) > -1 ||
@@ -94,12 +90,8 @@ function App() {
       }
       return false;
     });
-    console.log("Filtered results:");
-    console.log(results);
-
     // Update result state
     setSearchResults(results);
-    console.log("Update researchResults state .");
   };
 
   return (
@@ -115,6 +107,7 @@ function App() {
           changeAlgorithm={changeAlgorithm}
           changeSortingOrder={changeSortingOrder}
           searchStock={searchStock}
+          stockSelected={stockToView}
         />
         <StockView stock={stockToView} marketInfo={marketInfo} />
       </div>
