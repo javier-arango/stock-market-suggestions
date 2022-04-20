@@ -1,17 +1,17 @@
 * {
     font-family: "Roboto", sans-serif;
-  }
-  
-  .p-green {
-    color: #379634;
-  }
-  
-  .p-red {
-    color: #ec4e20;
-  }
+}
 
-  .app {
+.p-green {
+    color: #379634;
+}
+
+.p-red {
+    color: #ec4e20;
+}
+
+.app {
     display: grid;
     grid-template-columns: 400px 1fr;
     height: 100vh;
-  }
+}

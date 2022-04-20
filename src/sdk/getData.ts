@@ -1,95 +1,112 @@
 import { Datum, Stock, Stocks } from "../types/data";
+import { quickSortDates } from "./quickSort";
+import { radixSortDates } from "./radixSort";
 import data from "../data/stock_data.json";
 
-/** Sort dates in ascending order */
-const sortDates = (dataArr: Array<Datum>) => {
-  dataArr.sort((a: any, b: any) => b.date - a.date);
-};
+/** Object containing all stock information by ticker */
+type StockObject = { [ticker: string]: Stock }
 
-/** Find the investment ating  */
-const findInvestmentRating = (datum: Array<Datum>, range = -1): number => {
-  // If range is not set, set it to the last index
-  let end = range === -1 ? datum.length - 1 : range;
+/**
+ * Gets the investment rating of a stock
+ * 
+ * @param data array of Datum from a given stock
+ * @param range the time range to estimate the investment rating
+ * @return investment rating
+ */
+const findInvestmentRating = (data: Array<Datum>, range = 30): number => {
+    // If range is not set, set it to the last index
+    let end = range === -1 ? data.length - 1 : range;
 
-  // Stock rating
-  let sumGap: number = 0;
-  let dayCount: number = 0;
-  let sumPrice = 0;
+    // Stock rating
+    let sumGap: number = 0;
+    let dayCount: number = 0;
+    let sumPrice = 0;
 
-  // Find stock sumGap
-  for (let i = 0; i < end; i++) {
-    const { dcf, price } = datum[i];
-    sumGap += dcf - price;
-    sumPrice += price;
-    dayCount++;
-  }
-
-  const averageGap = sumGap / dayCount;
-  const averagePrice = sumPrice / dayCount;
-  const investmentRating = (averageGap / averagePrice) * 100;
-
-  // Calculate the investment rating
-  return parseFloat(investmentRating.toFixed(2));
-};
-
-/** Add stocks to the stocks array object | Stocks */
-const addStock = (stocks: Stocks, datum: Datum): void => {
-  // Add values to the stock obj
-  stocks.push({
-    investmentRating: 0,
-    ticker: datum.ticker!,
-    name: datum.name!,
-    data: [],
-  });
-};
-
-/** Add values to the data array in Stock object | Stocsk.data = [] */
-const addDataToStock = (stock: Stock, datum: Datum): void => {
-  stock.data.push({
-    name: datum.name,
-    ticker: datum.ticker,
-    date: new Date(datum.date),
-    price: datum.price,
-    dcf: datum.dcf,
-  });
-};
-
-/** Process the data from json file */
-const getProcessedData = (): Stocks => {
-  // Unprocessed data
-  const obj: any = data; // Load json data
-
-  // Varibales
-  const dataMap = new Map(); // Map - (key: ticker, value: index)
-  const stocks: Stocks = []; // Store processed data
-
-  // Add the stock data
-  let index: number = 0; // Array index
-  obj.forEach((datum: any) => {
-    if (!dataMap.has(datum.ticker)) {
-      // Add value if the key is not in the map
-      dataMap.set(datum.ticker, index);
-
-      // // Add values to the stock obj
-      addStock(stocks, datum);
-
-      index++;
+    // Find stock sumGap
+    for (let i = 0; i < end; i++) {
+        const { dcf, price } = data[i];
+        sumGap += dcf - price;
+        sumPrice += price;
+        dayCount++;
     }
 
-    // Add values to the datum obj
-    let stockIndex = dataMap.get(datum.ticker);
-    addDataToStock(stocks[stockIndex], datum);
-  });
+    // calculate investment rating
+    const averageGap = sumGap / dayCount;
+    const averagePrice = sumPrice / dayCount;
+    const investmentRating = (averageGap / averagePrice) * 100;
 
-  // Calculate the investing rating
-  dataMap.forEach((data: any) => {
-    //sortDates(stocks[data].data); // Sort dates
-    stocks[data].investmentRating = findInvestmentRating(stocks[data].data); // Calculate investing rating
-  });
-
-  // Return processed data
-  return stocks;
+    // Calculate the investment rating
+    return parseFloat(investmentRating.toFixed(2));
 };
 
-/** Export processed data funcion */
+/**
+ * Formats raw data to be processed
+ * 
+ * @param method sorting method to process dates
+ * @return array of Datum
+ */
+const getRawData = (method: string = "quicksort"): Array<Datum> => {
+    // get raw data
+    const rawData = data as Array<any>;
+
+    // convert raw data to expected format
+    const stocks: Array<Datum> = [];
+    rawData.forEach((datum: any) => {
+        stocks.push({
+            ticker: datum.ticker,
+            name: datum.name,
+            price: parseFloat(datum.price.toFixed(2)), // round to 2 decimal places
+            dcf: parseFloat(datum.dcf.toFixed(2)), // round to 2 decimal places
+            date: new Date(datum.date), // convert date string to date object
+        });
+    });
+
+    // sort data by dates
+    return method === "quicksort"
+        ? quickSortDates(stocks)
+        : radixSortDates(stocks);
+};
+
+/**
+ * Processes processed raw data and returns a array of stocks
+ * 
+ * @param sortingMethod sorting method to process dates
+ * @return array of Datum
+ */
+const getProcessedData = (sortingMethod: string = "radixsort"): Stocks => {
+    // Unprocessed data
+    const raw: Array<Datum> = getRawData(sortingMethod); // Load json data
+
+    // Varibales
+    const stockObject: StockObject = {}; // Stock object
+
+    // Add the stock data
+    raw.forEach((datum: Datum) => {
+        // get ticker from datum
+        const { ticker } = datum;
+
+        // If the stock is not in the object, add it
+        if (!stockObject[ticker]) {
+            stockObject[ticker] = {
+                investmentRating: 0,
+                ticker,
+                name: datum.name,
+                data: [],
+            };
+        }
+
+        // Add the data to the stock
+        stockObject[ticker].data.push(datum);
+    });
+
+    // Add the investment rating to the stock
+    Object.keys(stockObject).forEach((ticker: string) => {
+        stockObject[ticker].investmentRating = findInvestmentRating(
+            stockObject[ticker].data
+        );
+    });
+
+    return Object.values(stockObject);
+};
+
 export { getProcessedData, findInvestmentRating };

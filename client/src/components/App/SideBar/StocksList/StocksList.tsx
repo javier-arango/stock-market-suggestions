@@ -1,30 +1,40 @@
 import React from "react";
-import "./StockList.css";
 
-function StocksList(props: any) {
-    const handleCick = (listElement: any, sticker: string) => {
+function StocksList({ listClickHandler, stocks = {} }: any) {
+    /**
+     * Method that handles stock click
+     * 
+     * @param listElement element that was clicked on
+     * @param ticker company ticker
+     */
+    const handleCick = (listElement: any, ticker: string) => {
         // Remove previous active list element
         Array.from(
             document.querySelectorAll(".list-group-item.active")
         ).forEach((el) => el.classList.remove("active"));
 
         // Get the stock data
-        props.listClickHandler(sticker);
+        listClickHandler(ticker);
 
         // Add class active to element
         listElement.classList.add("active");
     };
 
     return (
-        <ul className="list-group" id="stock-list">
-            {props.stocks?.map((stock: any) => {
+        <ul className="list-group" style={stockListStyle}>
+            {stocks?.map((stock: any) => {
+                // set base case
                 if (!stock) return <></>;
+
+                // extract necessary props
                 const {
                     name,
                     ticker,
                     investmentRating,
                     data: [{ price: latestPrice }, { price: yesterdayPrice }],
                 } = stock;
+
+                // get price class name
                 const classPrice =
                     latestPrice < yesterdayPrice ? "p-red" : "p-green";
 
@@ -61,6 +71,11 @@ function StocksList(props: any) {
             })}
         </ul>
     );
+}
+
+const stockListStyle = {
+    height: "100%",
+    background: "rgb(222, 222, 222)",
 }
 
 export default StocksList;

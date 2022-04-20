@@ -1,48 +1,48 @@
 #sidebar {
-  background-color: white;
-  width: 100%;
+    background-color: white;
+    width: 100%;
 }
 
 .list-group {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .list-group .list-group-item {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .list-group .tikcer {
-  color: red;
+    color: red;
 }
 
 .list-group .name {
-  color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.5);
 }
 
 .list-group .active {
-  background-color: #1c2731 !important;
-  border: none !important;
-  border-radius: 0px !important;
+    background-color: #1c2731 !important;
+    border: none !important;
+    border-radius: 0px !important;
 }
 
 .list-group .active .ticker {
-  color: white;
+    color: white;
 }
 
 .list-group .active .name {
-  color: #44ffd2;
+    color: #44ffd2;
 }
 
 .spinner-border {
-  border-color: #44ffd2 #44ffd2 #44ffd2 #ffffff;
+    border-color: #44ffd2 #44ffd2 #44ffd2 #ffffff;
 }
 
 .badge-overpriced {
-  background-color: #ec2020;
+    background-color: #ec2020;
 }
 
 .badge-underpriced {
-  background-color: #379634;
+    background-color: #379634;
 }

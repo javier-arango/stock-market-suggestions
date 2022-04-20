@@ -7,6 +7,7 @@
   "scripts": {
     "test": "jest",
     "client:build": "cd client && npm run build && cd ..",
+    "client:start": "cd client && npm run start && cd ..",
     "start": "node server/index.ts",
     "dev:server": "nodemon --watch './**/*.ts' --exec \"node --experimental-specifier-resolution=node --loader ts-node/esm\" src/index.ts",
     "dev:deploy": "npm run client:build && npm run dev:server",

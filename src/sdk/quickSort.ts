@@ -1,118 +1,83 @@
-/** Import data types */
-import { Stocks } from "../types/data";
+import { Datum } from "../types/data";
 
-/** Sorting type */
-type SortingType = "desc" | "asc";
-
-/** Swap two elements */
-const swap = (arr: Stocks, from: number, to: number): void => {
-  let temp = arr[from];
-  arr[from] = arr[to];
-  arr[to] = temp;
+/**
+ * Swap two elements
+ *
+ * @param arr array of datum
+ * @param from from position to swap
+ * @param to to position to swap
+ */
+const swapDates = (arr: Array<Datum>, from: number, to: number): void => {
+    let temp = arr[from];
+    arr[from] = arr[to];
+    arr[to] = temp;
 };
 
-/** Partition the array picking the last element as pivot */
-const partition = (
-  arr: Stocks,
-  low: number,
-  high: number,
-  type: SortingType = "desc"
+/**
+ * Partition the array picking the last element as pivot
+ *
+ * @param arr array of datum
+ * @param low low index
+ * @param high high index
+ * @return partition of dates
+ */
+const partitionDates = (
+    arr: Array<Datum>,
+    low: number,
+    high: number
 ): number => {
-  let pivot: number = arr[high].investmentRating; // Pick the last element of the array
-  let from = low - 1; // Index of the smallest element
+    let pivot: Date = arr[high].date; // Pick the last element of the array
+    let from = low - 1; // Index of the smallest element
 
-  for (let to = low; to <= high - 1; to++) {
-    // Ascending order
-    if (type === "asc") {
-      if (arr[to].investmentRating < pivot) {
-        from++;
-        swap(arr, from, to);
-      }
-    } else {
-      // Descending order
-      if (arr[to].investmentRating > pivot) {
-        from++;
-        swap(arr, from, to);
-      }
+    for (let to = low; to <= high - 1; to++) {
+        // Descending order
+        if (arr[to].date > pivot) {
+            from++;
+            swapDates(arr, from, to);
+        }
     }
-  }
-  swap(arr, from + 1, high);
 
-  return from + 1;
+    swapDates(arr, from + 1, high);
+
+    return from + 1;
 };
 
-/** Quick Sort helper funciton */
-const quickSortHelper = (
-  arr: Stocks,
-  type: SortingType = "desc",
-  low: number = 0,
-  high: number = arr.length - 1
+/**
+ * Quick sort helper function
+ *
+ * @param arr array of datum
+ * @param low low index
+ * @param high high index
+ */
+const quickSortDatesHelper = (
+    arr: Array<Datum>,
+    low: number = 0,
+    high: number = arr.length - 1
 ): void => {
-  if (low < high) {
-    // Partition index
-    let pivot = partition(arr, low, high, type);
+    if (low < high) {
+        // Partition index
+        let pivot = partitionDates(arr, low, high);
 
-    // Recursively partition of the array
-    quickSortHelper(arr, type, low, pivot - 1);
-    quickSortHelper(arr, type, pivot + 1, high);
-  }
+        // Recursively partition of the array
+        quickSortDatesHelper(arr, low, pivot - 1);
+        quickSortDatesHelper(arr, pivot + 1, high);
+    }
 };
 
-/** Quick Sort */
-const quickSort = (arr: Stocks, type: SortingType = "desc"): Stocks => {
-  const data: Stocks = arr; // Unsorted data
+/**
+ * Quick sort
+ *
+ * @param arr array of datum
+ * @return sorted array of datum by date
+ */
+const quickSortDates = (arr: Array<Datum>): Array<Datum> => {
+    const data: Array<Datum> = arr; // Unsorted data
 
-  // Sort the array
-  quickSortHelper(data, type);
+    // Sort the array
+    quickSortDatesHelper(data);
 
-  // Sorted data
-  return data;
+    // Sorted data
+    return data;
 };
 
-/** Run example */
-const arr: Stocks = [
-  {
-    investmentRating: 89.01,
-    ticker: "APPL",
-    name: "Apple",
-    data: [],
-  },
-  {
-    investmentRating: 856.54,
-    ticker: "CHI",
-    name: "China",
-    data: [],
-  },
-  {
-    investmentRating: 0.545,
-    ticker: "TWI",
-    name: "Twitter",
-    data: [],
-  },
-  {
-    investmentRating: -51.8,
-    ticker: "MCS",
-    name: "Micrsoft",
-    data: [],
-  },
-  {
-    investmentRating: 0.005,
-    ticker: "FBC",
-    name: "Facebook",
-    data: [],
-  },
-  {
-    investmentRating: 0.003,
-    ticker: "FBC",
-    name: "Facebook",
-    data: [],
-  },
-  {
-    investmentRating: -5.8,
-    ticker: "ABC",
-    name: "Google",
-    data: [],
-  },
-];
-
-export { quickSort };
+export { quickSortDates };

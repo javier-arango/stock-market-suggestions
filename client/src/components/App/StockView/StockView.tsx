@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
-import StockMarketInfo from "./StockMarketInfo/StockMarketInfo";
+import InvestmentRatingInfo from "./InvestmentRatingInfo/InvestmentRatingInfo";
 import StockData from "./StockData/StockData";
 import "./stockview.css";
 
-function StockView(props: any) {
-    const [currentTime, setCurrentTime] = useState(4);
-    const [range, setRange] = useState([0, 100]);
-    const [framedRating, setFrameRating] = useState(
-        props?.stock?.investmentRating
-    );
-    const [framedData, setFramedData] = useState<Array<any>>([]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const timeFrame = ["1M", "3M", "6M", "1YR", "5YR"];
+function StockView({ stock = {} }: any) {
+    // state
+    const [currentTime, setCurrentTime] = useState(0); // index of current time frame
+    const [range, setRange] = useState([0, 100]); // y-axis range
+    const [framedRating, setFrameRating] = useState(stock?.investmentRating); // investment rating
+    const [framedData, setFramedData] = useState<Array<any>>([]); // framed data
+    const timeFrame = ["1M", "3M", "6M", "1YR", "5YR"]; // time frame array
 
+    // retrieves graph data from stock information
     useEffect(() => {
-        if (!props?.stock || !props.stock.data?.length) return;
+        if (!stock || !stock?.data?.length) return;
 
         // Get the data of the stocks
         let increment: number, daysToRender: number;
@@ -44,16 +43,16 @@ function StockView(props: any) {
         }
 
         // get the data
-        fetch(`/api/rating?company=${props.stock.ticker}&range=${daysToRender}`)
+        fetch(`/api/rating?company=${stock?.ticker}&range=${daysToRender}`)
             .then((res) => res.json())
             .then((data) => setFrameRating(data.investmentRating));
 
         // populate the data
-        let min = props.stock.data[0],
+        let min = stock?.data[0],
             max = 0;
         const data: Array<any> = [];
         for (let i = 0; i < daysToRender; i += increment) {
-            const { price, dcf, date } = props.stock.data[i];
+            const { price, dcf, date } = stock?.data[i];
             min = Math.min(min, price, dcf);
             max = Math.max(max, price, dcf);
             data.push({
@@ -74,21 +73,20 @@ function StockView(props: any) {
         setFramedData(data.reverse());
         setRange([min, max]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentTime, props.stock.data]);
+    }, [currentTime, stock?.data]);
 
     return (
         <div
             id="stock-view"
             className="col d-flex flex-column align-items-center justify-content-center"
         >
-            <StockMarketInfo
-                marketInfo={props.marketInfo}
+            <InvestmentRatingInfo
                 framedRating={framedRating}
                 timeFrame={timeFrame}
                 currentTime={currentTime}
             />
             <StockData
-                stock={props.stock}
+                stock={stock}
                 changeTime={setCurrentTime}
                 currentTime={currentTime}
                 timeFrame={timeFrame}

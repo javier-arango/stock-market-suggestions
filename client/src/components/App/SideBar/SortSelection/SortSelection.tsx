@@ -1,56 +1,51 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 
-function SortSelection(props: any) {
-	return (
-		<div className="w-100 h-20 d-flex flex-column my-2">
-			<div className="d-flex flex-row mx-4 align-items-center">
-				<p style={{margin: 0}}>Sorting Method: </p>
-				{props.algorithms.map((algorithm: string) => {
-					return (
-						<div key={algorithm}>
-							<input
-								type="radio"
-								className="btn-check"
-								name="algorithm"
-								id={algorithm}
-								autoComplete="off"
-								checked={props.selAlgo === algorithm ? true : false}
-								onChange={() => props.changeAlgorithm(algorithm)}
-							/>
-							<label
-								className="btn btn-outline-secondary ms-3"
-								htmlFor={algorithm}
-							>
-								{algorithm}
-							</label>
-						</div>
-					);
-				})}
-			</div>
-			<br />
-			<div className="d-flex flex-row mx-4 align-items-center">
-				<p style={{margin: 0}}>Sorting Order: </p>
-				{props.sortingOrders.map((order: string) => {
-					return (
-						<div key={order}>
-							<input
-								type="radio"
-								className="btn-check"
-								name="orders"
-								id={order}
-								autoComplete="off"
-								checked={props.selOrder === order ? true : false}
-								onChange={() => props.changeSortingOrder(order)}
-							/>
-							<label className="btn btn-outline-secondary ms-3" htmlFor={order}>
-								{order === "asc" ? "Ascending" : "Descending"}
-							</label>
-						</div>
-					);
-				})}
-			</div>
-		</div>
-	);
+function SortSelection({
+    changeAlgorithm,
+    algorithms,
+    changeSortingOrder,
+    sortingOrders,
+}: any) {
+    return (
+        <div className="w-100 d-flex flex-column">
+            <div className="d-flex flex-row mx-4 align-items-center">
+                <p style={labelTextStyle}>Processing Method: </p>
+                <select
+                    className="form-select form-select-sm"
+                    aria-label=".form-select-sm example"
+                    defaultValue="radix"
+                    onChange={(e) => changeAlgorithm(e.target.value)}
+                >
+                    {algorithms.map((algorithm: string) => (
+                        <option key={algorithm} value={algorithm}>
+                            {algorithm === "radix" ? "Radix Sort" : "Quick Sort"}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <br />
+            <div className="d-flex flex-row mx-4 align-items-center">
+                <p style={labelTextStyle}>List Order: </p>
+                <select
+                    className="form-select form-select-sm ms-2"
+                    aria-label=".form-select-sm example"
+                    defaultValue=""
+                    onChange={(e) => changeSortingOrder(e.target.value)}
+                >
+                    <option value="">select sorting order</option>
+                    {sortingOrders.map((order: string) => (
+                        <option key={order} value={order}>
+                            {order === "asc" ? "Ascending" : "Descending"}
+                        </option>
+                    ))}
+                </select>
+            </div>
+        </div>
+    );
+}
+
+const labelTextStyle: CSSProperties = {
+    margin: 0,
 }
 
 export default SortSelection;

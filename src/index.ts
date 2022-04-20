@@ -2,8 +2,6 @@ import express, { Request, Response } from "express";
 import { fileURLToPath } from "url";
 import path from "path";
 import { getProcessedData, findInvestmentRating } from "./sdk/getData";
-import { quickSort } from "./sdk/quickSort";
-import { radixSort } from "./sdk/radixSort";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,58 +12,47 @@ const port = 8000;
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, "../client/build")));
 
+// this is the route to our api :)
 app.get("/api", (req: Request, res: Response) => {
-  res.send("Hello there welcome to our API !!!");
+    res.send("Hello there welcome to our API !!!");
 });
 
 // Send unsorted data
 app.get("/api/data", (req: Request, res: Response) => {
-  const stocks = getProcessedData(); // Unsorted data
-  res.send(stocks);
+    const { method } = req.query; // get sorting method
+
+	// catch invalid messages
+    if (method && method !== "quicksort" && method !== "radixsort") {
+        res.status(400).send("Invalid sorting method");
+    }
+
+    res.send(getProcessedData(method as string));
 });
 
-// Send data sorted using quickSort in descending order
-app.get("/api/data/quicksort", (req: Request, res: Response) => {
-  const stocks = getProcessedData(); // Unsorted data
-  res.send(quickSort(stocks));
-});
-
-// Send data sorted using quickSort in ascending order
-app.get("/api/data/quicksort/asc", (req: Request, res: Response) => {
-  const stocks = getProcessedData(); // Unsorted data
-  res.send(quickSort(stocks, "asc"));
-});
-
-// Send data sorted using radixSort in descending order
-app.get("/api/data/radixsort", (req: Request, res: Response) => {
-  const stocks = getProcessedData(); // Unsorted data
-  radixSort(stocks);
-  res.send(stocks);
-});
-
-// Send data sorted using radixSort in ascending order
-app.get("/api/data/radixsort/asc", (req: Request, res: Response) => {
-  const stocks = getProcessedData(); // Unsorted data
-  console.log(radixSort(stocks, "asc"));
-  res.send(radixSort(stocks, "asc"));
-});
-
+// gets the rating given a time frame in days
 app.get("/api/rating", (req: Request, res: Response) => {
-  const stocks = getProcessedData(); // Unsorted data
-  const { range, company } = req.query;
-  const stock = stocks.find((stock) => stock.ticker === company);
-  if (!stock) {
-    res.send({ error: "Company not found" });
-    return;
-  }
+    const stocks = getProcessedData(); // Unsorted data
+    const { range, company } = req.query;
+    const stock = stocks.find((stock) => stock.ticker === company);
+    if (!stock) {
+        res.send({ error: "Company not found" });
+        return;
+    }
 
-  const rangeNum = range ? parseInt(range as string) : -1;
+    let rangeNum = 30;
+    try {
+        rangeNum = parseInt(range as string);
+    } catch (err) {
+        res.send({ error: "Invalid range" });
+        return;
+    }
 
-  res.send({ investmentRating: findInvestmentRating(stock?.data, rangeNum) });
+    res.send({ investmentRating: findInvestmentRating(stock?.data, rangeNum) });
 });
 
+// hosts our frontend on the route of localhost:8000
 app.get("*", (req: Request, res: Response) => {
-  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
 });
 
 // Listening on port
